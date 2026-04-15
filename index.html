@@ -60,7 +60,6 @@
         .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
         .item img { width: 100%; height: 101%; object-fit: cover; display: block; }
         
-        /* Tamaños Retícula */
         .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
         .item.w { grid-column: span 4; grid-row: span 2; }
@@ -111,7 +110,7 @@
     <div id="ovI" class="overlay">
         <div class="info-inner" style="padding: 100px 10vw; background: var(--y); color: black; min-height: 100vh;">
             <h1>INFO</h1>
-            <div class="info-text" style="text-transform: none; line-height: 1.5; font-size: 1.2rem; margin-top: 30px;">
+            <div class="info-text" style="text-transform: none; line-height: 1.5; font-size: 1.25rem; margin-top: 30px;">
                 <p style="margin-bottom: 25px;">Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design, with studies in his native Caracas, Venezuela, and Barcelona, Spain. While his professional career has been deeply rooted in industrial design and digital fabrication, he has consistently maintained an experimental artistic practice through printmaking. This work represents his most analog side, driven by a curiosity for manual techniques and the tactile possibilities of the material.</p>
                 <p style="margin-bottom: 25px;">His creative process is a search for static vibration through visual adjustments. This exploration of graphic possibilities focuses on what the image does visually rather than telling a specific story—letting form exist for its own sake.</p>
                 <p style="margin-bottom: 25px;">The search for balance avoids perfect symmetry, leaning instead into broken patterns and slight irregularities where a composition finds its own rhythm. In this process, empty space isn’t just background; it plays an active role in shaping the composition. Scale and color function as tools to push and pull, building a necessary tension within the plane.</p>
@@ -132,7 +131,6 @@
         const types = ['s', 'm', 'w', 't'];
         const variations = 11;
 
-        // Home Grid
         const gridBg = document.getElementById('main-grid');
         for (let i = 1; i <= 200; i++) {
             const div = document.createElement('div');
@@ -143,7 +141,6 @@
             gridBg.appendChild(div);
         }
 
-        // RAW Grid - Colores
         const rawList = document.getElementById('raw-list');
         const colors = ['#FF0000', '#0000FF', '#FFFF00', '#FFFFFF', '#333333', '#00FF00', '#FF00FF'];
         for (let i = 1; i <= 100; i++) {
@@ -154,37 +151,4 @@
             rawList.appendChild(div);
         }
 
-        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
-        const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
-        const cl = document.getElementById('closeX');
-
-        btns.forEach((btn, idx) => {
-            btn.addEventListener('click', () => {
-                const r = btn.getBoundingClientRect();
-                btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
-                btn.classList.add('no-shape');
-                setTimeout(() => {
-                    btn.classList.add('expanded'); 
-                    overs[idx].classList.add('show'); 
-                    cl.style.display = 'block';
-                    
-                    // CORRECCIÓN DE COLOR DE LA X
-                    if(idx === 0) cl.style.color = '#fff'; // RAW (Blanca)
-                    if(idx === 1) cl.style.color = 'var(--blue)'; // WORKS (Azul)
-                    if(idx === 2) cl.style.color = '#000'; // INFO (Negra)
-                    
-                    document.body.style.overflow = 'hidden';
-                }, 20);
-            });
-        });
-
-        cl.onclick = () => {
-            document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
-            document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
-            cl.style.display = 'none';
-            document.body.style.overflow = '';
-            setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
-        };
-    </script>
-</body>
-</html>
+        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')
