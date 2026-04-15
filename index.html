@@ -16,14 +16,15 @@
         
         body { 
             background: var(--white); 
-            overflow: hidden; 
-            width: 100vw;
-            height: 100vh;
+            /* CORRECCIÓN: Quitamos overflow: hidden para permitir bajar */
+            overflow-x: hidden; 
+            width: 100%;
+            min-height: 100dvh;
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
         }
 
-        /* --- ÓRBITAS UI --- */
+        /* --- ÓRBITAS UI (FIJAS EN PANTALLA) --- */
         @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
         @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
         @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
@@ -46,53 +47,38 @@
 
         #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
 
-        /* --- GRID DE FONDO (TOTALMENTE LIMPIO) --- */
+        /* --- GRID DE FONDO --- */
         #main-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             grid-auto-rows: 200px; 
             grid-auto-flow: dense; 
-            gap: 0; /* Sin espacios */
+            gap: 0; 
             padding: 0; 
             width: 100vw; 
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
+            background: #fff;
         }
         
         .item { border: none; overflow: hidden; position: relative; }
-        .item img { width: 100%; height: 101%; object-fit: cover; display: block; } /* 101% evita micro-fisuras blancas */
+        .item img { width: 100%; height: 101%; object-fit: cover; display: block; }
         
         .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
         .item.w { grid-column: span 4; grid-row: span 2; }
         .item.t { grid-column: span 2; grid-row: span 4; }
         
+        /* El logo LAKRACONK ahora está integrado en el flujo del grid */
         .g-item { 
             grid-column: span 4; grid-row: span 4; 
             background: #000; color: #fff; 
             font-size: 4rem; text-align: center; line-height: 0.8; 
-            z-index: 2; display: flex; align-items: center; justify-content: center; 
+            display: flex; align-items: center; justify-content: center; 
             font-weight: 900; pointer-events: none;
         }
 
-        /* --- INFO SECCIÓN --- */
-        #ovI { background: var(--y); color: #000; }
-        .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
-        .info-text { text-transform: none; line-height: 1.5; font-size: 1.2rem; }
-        .contact-footer { margin-top: 50px; padding-top: 30px; border-top: 3px solid #000; display: flex; gap: 40px; }
-        .contact-footer a { color: #000; text-decoration: none; font-weight: 900; font-size: 1.8rem; }
-
         @media (max-width: 600px) {
-            #astronaut-group { left: auto; right: 25px; width: 80px; bottom: 30px; top: auto; height: 350px; }
-            .btn { position: absolute; left: 50% !important; transform: translateX(-50%) !important; animation: none !important; }
-            .btn-red-circle { width: 85px; height: 85px; bottom: 20px; } 
-            .btn-blue-square { width: 85px; height: 85px; bottom: 120px; } 
-            .btn-yellow-tri { width: 95px; height: 95px; bottom: 220px; padding-top: 25px; }
-            .g-item { font-size: 2.5rem; grid-column: span 2; grid-row: span 2; }
             #main-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
+            .g-item { font-size: 2.5rem; grid-column: span 2; grid-row: span 2; }
         }
     </style>
 </head>
@@ -110,23 +96,6 @@
         <div id="raw-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0;"></div>
     </div>
 
-    <div id="ovW" class="overlay">
-        <div style="background: white; min-height: 100vh; padding: 100px 5vw;">
-            <h1 style="font-size: 8vw; color: var(--blue); text-align: center; margin-bottom: 50px;">WORKS</h1>
-            <div id="works-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px;"></div>
-        </div>
-    </div>
-    
-    <div id="ovI" class="overlay">
-        <div class="info-inner">
-            <h1>INFO</h1>
-            <div class="info-text">
-                <p>Jesus Villarreal (@lakraconk)...</p>
-                <div class="contact-footer"><a href="https://www.instagram.com/lakraconk" target="_blank">IG</a></div>
-            </div>
-        </div>
-    </div>
-
     <main id="main-grid">
         <div class="item g-item">LAKRA<br>CONK</div>
     </main>
@@ -135,9 +104,9 @@
         const types = ['s', 'm', 'w', 't'];
         const variations = 11;
 
-        // Llenar Fondo
+        // Generamos 200 piezas para que el scroll sea bien largo
         const gridBg = document.getElementById('main-grid');
-        for (let i = 1; i <= 60; i++) { // Más piezas para asegurar cobertura total
+        for (let i = 1; i <= 200; i++) { 
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             const num = Math.floor(Math.random() * variations) + 1;
@@ -146,29 +115,33 @@
             gridBg.appendChild(div);
         }
 
-        // Lógica de Botones
+        // Lógica de Botones Expansibles
         const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
-        const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
+        const overs = [document.getElementById('ovR'), null, null]; // Ajustar según secciones
         const cl = document.getElementById('closeX');
 
         btns.forEach((btn, idx) => {
-            btn.addEventListener('click', () => {
-                const r = btn.getBoundingClientRect();
-                btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
-                btn.classList.add('no-shape');
-                setTimeout(() => {
-                    btn.classList.add('expanded'); 
-                    overs[idx].classList.add('show'); 
-                    cl.style.display = 'block';
-                }, 20);
-            });
+            if(btn) {
+                btn.addEventListener('click', () => {
+                    const r = btn.getBoundingClientRect();
+                    btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
+                    btn.classList.add('no-shape');
+                    setTimeout(() => {
+                        btn.classList.add('expanded'); 
+                        if(overs[idx]) overs[idx].classList.add('show'); 
+                        cl.style.display = 'block';
+                        document.body.style.overflow = 'hidden'; // Bloquea el fondo solo cuando el menú está abierto
+                    }, 20);
+                });
+            }
         });
 
         cl.onclick = () => {
             document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
             document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
             cl.style.display = 'none';
-            setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
+            document.body.style.overflow = ''; // Devuelve el scroll al cerrar
+            setTimeout(() => { btns.forEach(b => { if(b){ b.style.top = ''; b.style.left = ''; } }); }, 600);
         };
     </script>
 </body>
