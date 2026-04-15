@@ -38,17 +38,16 @@
         .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
         .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
 
-        /* --- ESTILOS DE LA X DE CIERRE --- */
+        /* --- X DE CIERRE --- */
         #closeX { 
             position: fixed; top: 25px; right: 25px; z-index: 11000; 
             font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; 
         }
-        /* Colores forzados por clase */
-        #closeX.is-raw { color: #fff !important; mix-blend-mode: normal; }
-        #closeX.is-works { color: var(--blue) !important; mix-blend-mode: normal; }
-        #closeX.is-info { color: #000 !important; mix-blend-mode: normal; }
+        #closeX.is-raw { color: #fff !important; }
+        #closeX.is-works { color: var(--blue) !important; }
+        #closeX.is-info { color: #000 !important; }
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; overflow-x: hidden; padding: 0; background: transparent; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; background: var(--white); }
         .show { display: block !important; }
 
         /* --- HOME GRID --- */
@@ -62,7 +61,7 @@
         .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
         .info-text { text-transform: none; line-height: 1.5; font-size: 1.2rem; }
 
-        /* --- MÓVIL --- */
+        /* --- MÓVIL (Developer Mode) --- */
         @media (max-width: 600px) {
             #astronaut-group { 
                 left: auto; right: 25px; bottom: 30px; top: auto; 
@@ -80,16 +79,18 @@
 </head>
 <body>
     <div id="closeX">X</div>
-    
     <div id="astronaut-group"></div>
 
-    <div id="ovR" class="overlay"><div style="background: black; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 8vw;">RAW</h1></div></div>
-    <div id="ovW" class="overlay"><div style="background: white; padding: 100px 0;"><h1 style="color: var(--blue); text-align: center; font-size: 8vw;">WORKS</h1></div></div>
+    <div id="ovR" class="overlay"><div style="background: black; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 10vw;">RAW</h1></div></div>
+    <div id="ovW" class="overlay"><div style="background: white; padding: 100px 0;"><h1 style="color: var(--blue); text-align: center; font-size: 10vw;">WORKS</h1></div></div>
     <div id="ovI" class="overlay">
         <div class="info-inner">
-            <h1>INFO</h1>
+            <h1 style="font-size: 8vw; margin-bottom: 40px;">INFO</h1>
             <div class="info-text">
-                <p>Jesus Villarreal (@lakraconk)... [BIOGRAFÍA]</p>
+                <p style="margin-bottom: 25px;">Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design, with studies in his native Caracas, Venezuela, and Barcelona, Spain. While his professional career has been deeply rooted in industrial design and digital fabrication, he has consistently maintained an experimental artistic practice through printmaking. This work represents his most analog side, driven by a curiosity for manual techniques and the tactile possibilities of the material.</p>
+                <p style="margin-bottom: 25px;">His creative process is a search for static vibration through visual adjustments. This exploration of graphic possibilities focuses on what the image does visually rather than telling a specific story—letting form exist for its own sake.</p>
+                <p style="margin-bottom: 25px;">The search for balance avoids perfect symmetry, leaning instead into broken patterns and slight irregularities where a composition finds its own rhythm. In this process, empty space isn’t just background; it plays an active role in shaping the composition. Scale and color function as tools to push and pull, building a necessary tension within the plane.</p>
+                <p>From this graphic order, Villarreal utilizes different printing techniques to produce his final pieces. The core interest lies in how the precision of the original design interacts with the material itself. This friction introduces small shifts and imperfections, distancing the work from digital perfection and giving it a more physical presence.</p>
             </div>
         </div>
     </div>
@@ -129,13 +130,10 @@
                     btn.classList.add('expanded'); 
                     overs[idx].classList.add('show'); 
                     cl.style.display = 'block';
-                    
-                    // ASIGNACIÓN DE CLASE PARA COLOR DE LA X
-                    cl.className = ''; // Limpiar clases previas
+                    cl.className = ''; 
                     if (idx === 0) cl.classList.add('is-raw');
                     if (idx === 1) cl.classList.add('is-works');
                     if (idx === 2) cl.classList.add('is-info');
-
                     document.body.style.overflow = 'hidden';
                 }, 20);
             });
@@ -148,6 +146,17 @@
             document.body.style.overflow = '';
             setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
         };
+
+        // Rellenar Home Grid
+        const grid = document.getElementById('main-grid');
+        for (let i = 1; i <= 30; i++) {
+            const div = document.createElement('div');
+            const type = types[Math.floor(Math.random() * types.length)];
+            div.className = `item ${type}`;
+            const num = Math.floor(Math.random() * 11) + 1;
+            div.innerHTML = `<img src="img/s${num}.webp">`;
+            grid.appendChild(div);
+        }
     </script>
 </body>
 </html>
