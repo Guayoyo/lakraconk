@@ -10,7 +10,6 @@
             --r: #FF0000; --y: #FFFF00; --blue: #0000FF; 
             --black: #000; --white: #fff; 
             --transit: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            --stroke-width: 15px; /* Aquí controlamos el grosor de la línea blanca */
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,19 +38,25 @@
         .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
         .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
 
+        #btnW.expanded { background-color: var(--white) !important; color: var(--blue) !important; transition: none; }
+        #btnR.expanded { background-color: var(--black) !important; }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; overflow-x: hidden; padding: 0; background: transparent; }
+        .show { display: block !important; }
+
         #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
 
-        /* --- GRID DE FONDO (CON STROKE BLANCO GRUESO) --- */
+        /* --- GRID DE FONDO (CON SEPARACIÓN BLANCA) --- */
         #main-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            grid-auto-rows: 180px; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            grid-auto-rows: 150px; 
             grid-auto-flow: dense; 
-            gap: var(--stroke-width); 
-            padding: var(--stroke-width); 
+            gap: 5px; /* Aquí creamos el 'stroke' blanco mediante el espacio entre celdas */
+            padding: 5px; 
             width: 100vw; 
             min-height: 100vh;
-            background: var(--white); 
+            background: var(--white); /* Color del stroke */
         }
         
         .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
@@ -71,12 +76,7 @@
         }
 
         @media (max-width: 600px) {
-            #main-grid { 
-                gap: 8px; 
-                padding: 8px; 
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
-                grid-auto-rows: 100px; 
-            }
+            #main-grid { gap: 3px; padding: 3px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
             .g-item { font-size: 2rem; grid-column: span 2; grid-row: span 2; }
         }
     </style>
@@ -91,8 +91,8 @@
     </div>
 
     <div id="ovR" class="overlay">
-        <div style="background: black; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 8vw;">RAW</h1></div>
-        <div id="raw-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; padding: 10px; background: black;"></div>
+        <div class="raw-header"><h1>RAW</h1></div>
+        <div class="raw-content" id="raw-list" style="background: black; gap: 2px; padding: 2px;"></div>
     </div>
 
     <main id="main-grid">
@@ -113,6 +113,7 @@
             gridBg.appendChild(div);
         }
 
+        // Lógica de RAW
         const rawList = document.getElementById('raw-list');
         for (let i = 1; i <= 60; i++) {
             const type = types[Math.floor(Math.random() * types.length)];
