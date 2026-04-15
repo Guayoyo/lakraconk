@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LAKRACONK | Jesus Villarreal</title>
+    <title>LAKRACONK | Official Site</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -16,14 +16,14 @@
         
         body { 
             background: var(--white); 
-            overflow-x: hidden; 
-            width: 100%;
-            min-height: 100dvh;
+            overflow: hidden; 
+            width: 100vw;
+            height: 100vh;
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
         }
 
-        /* --- ÓRBITAS TEST 19 --- */
+        /* --- ÓRBITAS UI --- */
         @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
         @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
         @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
@@ -31,7 +31,6 @@
         #astronaut-group { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; pointer-events: none; }
         .btn { position: fixed; display: flex; align-items: center; justify-content: center; transition: var(--transit); cursor: pointer; color: var(--white); border: none; pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10; font-weight: 900; }
         
-        /* EXPANSIÓN */
         .no-shape { border-radius: 0 !important; clip-path: none !important; transition: none !important; }
         .expanded { top: 0 !important; left: 0 !important; width: 100vw !important; height: 100dvh !important; animation: none !important; z-index: 10000 !important; transform: none !important; margin: 0 !important; }
 
@@ -47,22 +46,37 @@
 
         #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
 
-        /* --- SECCIÓN RAW --- */
-        .raw-header { position: absolute; top: 0; width: 100%; z-index: 100; padding: 80px 0 40px 0; background: transparent; pointer-events: none; }
-        .raw-header h1 { color: #fff; mix-blend-mode: difference; font-size: 8vw; letter-spacing: -4px; font-weight: 900; text-align: center; }
-        .raw-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-rows: 250px; grid-auto-flow: dense; width: 100%; gap: 0; background: black; }
-        .raw-item { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- GRID DE FONDO (SIN STROKES) --- */
-        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 0; padding: 0; width: 100vw; min-height: 100vh; }
-        .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
-        .item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* --- GRID DE FONDO (TOTALMENTE LIMPIO) --- */
+        #main-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            grid-auto-rows: 200px; 
+            grid-auto-flow: dense; 
+            gap: 0; /* Sin espacios */
+            padding: 0; 
+            width: 100vw; 
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .item { border: none; overflow: hidden; position: relative; }
+        .item img { width: 100%; height: 101%; object-fit: cover; display: block; } /* 101% evita micro-fisuras blancas */
+        
         .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
         .item.w { grid-column: span 4; grid-row: span 2; }
         .item.t { grid-column: span 2; grid-row: span 4; }
         
-        .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .g-item { 
+            grid-column: span 4; grid-row: span 4; 
+            background: #000; color: #fff; 
+            font-size: 4rem; text-align: center; line-height: 0.8; 
+            z-index: 2; display: flex; align-items: center; justify-content: center; 
+            font-weight: 900; pointer-events: none;
+        }
 
         /* --- INFO SECCIÓN --- */
         #ovI { background: var(--y); color: #000; }
@@ -77,7 +91,8 @@
             .btn-red-circle { width: 85px; height: 85px; bottom: 20px; } 
             .btn-blue-square { width: 85px; height: 85px; bottom: 120px; } 
             .btn-yellow-tri { width: 95px; height: 95px; bottom: 220px; padding-top: 25px; }
-            .g-item { font-size: 2rem; grid-column: span 2; grid-row: span 2; }
+            .g-item { font-size: 2.5rem; grid-column: span 2; grid-row: span 2; }
+            #main-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
         }
     </style>
 </head>
@@ -91,8 +106,8 @@
     </div>
 
     <div id="ovR" class="overlay">
-        <div class="raw-header"><h1>RAW</h1></div>
-        <div class="raw-content" id="raw-list"></div>
+        <div style="background: black; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 8vw;">RAW</h1></div>
+        <div id="raw-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0;"></div>
     </div>
 
     <div id="ovW" class="overlay">
@@ -106,11 +121,8 @@
         <div class="info-inner">
             <h1>INFO</h1>
             <div class="info-text">
-                <p>Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design, with studies in his native Caracas, Venezuela, and Barcelona, Spain. While his professional career has been deeply rooted in industrial design and digital fabrication, he has consistently maintained an experimental artistic practice through printmaking.</p>
-                <div class="contact-footer">
-                    <a href="https://www.instagram.com/lakraconk" target="_blank">IG</a>
-                    <a href="mailto:hola@lakraconk.com">✉</a>
-                </div>
+                <p>Jesus Villarreal (@lakraconk)...</p>
+                <div class="contact-footer"><a href="https://www.instagram.com/lakraconk" target="_blank">IG</a></div>
             </div>
         </div>
     </div>
@@ -123,8 +135,9 @@
         const types = ['s', 'm', 'w', 't'];
         const variations = 11;
 
+        // Llenar Fondo
         const gridBg = document.getElementById('main-grid');
-        for (let i = 1; i <= 40; i++) {
+        for (let i = 1; i <= 60; i++) { // Más piezas para asegurar cobertura total
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             const num = Math.floor(Math.random() * variations) + 1;
@@ -133,16 +146,7 @@
             gridBg.appendChild(div);
         }
 
-        const rawList = document.getElementById('raw-list');
-        for (let i = 1; i <= 60; i++) {
-            const type = types[Math.floor(Math.random() * types.length)];
-            const num = Math.floor(Math.random() * variations) + 1;
-            const img = document.createElement('img');
-            img.className = 'raw-item';
-            img.src = `img/${type}${num}.webp`;
-            rawList.appendChild(img);
-        }
-
+        // Lógica de Botones
         const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
         const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
         const cl = document.getElementById('closeX');
@@ -156,7 +160,6 @@
                     btn.classList.add('expanded'); 
                     overs[idx].classList.add('show'); 
                     cl.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
                 }, 20);
             });
         });
@@ -165,7 +168,6 @@
             document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
             document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
             cl.style.display = 'none';
-            document.body.style.overflow = '';
             setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
         };
     </script>
