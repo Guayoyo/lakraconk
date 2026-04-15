@@ -9,6 +9,7 @@
         :root { 
             --r: #FF0000; --y: #FFFF00; --blue: #0000FF; 
             --black: #000; --white: #fff; 
+            --transit: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -20,20 +21,27 @@
             text-transform: uppercase;
         }
 
-        /* --- NAVEGACIÓN --- */
+        /* --- ÓRBITAS TEST 19 (RESTAURADAS) --- */
+        @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
+        @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
+        @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
+
         #ui-nav { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; pointer-events: none; }
         .btn { 
             position: absolute; display: flex; align-items: center; justify-content: center; 
             cursor: pointer; color: var(--white); font-weight: 900; z-index: 1001; 
-            pointer-events: auto; transition: transform 0.3s ease;
+            pointer-events: auto; transition: var(--transit);
         }
-        .btn-red { width: 120px; height: 120px; background: var(--r); border-radius: 50%; top: 20%; left: 15%; }
-        .btn-blue { width: 110px; height: 110px; background: var(--blue); top: 50%; right: 15%; }
-        .btn-yellow { 
-            width: 140px; height: 140px; background: var(--y); color: var(--black);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); bottom: 15%; left: 20%;
-            padding-top: 35px;
+        .btn span { color: var(--white); } /* Texto dentro del botón */
+
+        .btn-red-circle { width: 125px; height: 125px; background: var(--r); border-radius: 50%; animation: orb1 40s linear infinite; }
+        .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
+        .btn-yellow-tri { 
+            width: 145px; height: 145px; background: var(--y); color: var(--black);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; 
+            padding-top: 35px; /* Ajuste para el texto dentro del triángulo */
         }
+        .btn-yellow-tri span { color: var(--black); } /* Texto negro en triángulo amarillo */
 
         /* --- OVERLAYS --- */
         .overlay { 
@@ -49,11 +57,28 @@
         #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; width: 100%; }
         .item { overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .item img { width: 100%; height: 100%; object-fit: cover; }
+        /* Tamaños Retícula */
+        .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
         .item.w { grid-column: span 4; grid-row: span 2; }
+        .item.t { grid-column: span 2; grid-row: span 4; }
         .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; font-weight: 900; }
 
-        /* --- WORKS (ESTILO COLECCIÓN / REFERENCIA) --- */
+        /* --- RAW (RESTAURADO: Cuadrícula idéntica pero colores) --- */
+        #ovR .raw-inner { padding: 80px 5vw; background: #000; min-height: 100vh; color: #fff; }
+        #ovR h1 { font-size: 10vw; text-align: center; margin-bottom: 50px; }
+        .raw-content { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            grid-auto-rows: 150px; 
+            grid-auto-flow: dense; 
+            width: 100%; 
+            gap: 0; 
+            background: black; 
+        }
+        .raw-item { border: none; overflow: hidden; }
+
+        /* --- WORKS (Colección / Referencia) --- */
         #ovW .works-inner { padding: 80px 5vw; text-align: center; }
         #ovW h1 { font-size: 10vw; color: var(--blue); margin-bottom: 60px; font-weight: 900; letter-spacing: -2px; }
         
@@ -64,29 +89,29 @@
             max-width: 1600px; 
             margin: 0 auto;
         }
-        
         .artwork { display: flex; flex-direction: column; align-items: center; }
         .artwork-box { 
-            width: 100%; 
-            aspect-ratio: 32 / 41; 
-            border: 5px solid var(--blue); 
-            background: #f4f4f4; 
-            margin-bottom: 15px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; aspect-ratio: 32 / 41; border: 5px solid var(--blue); 
+            background: #f4f4f4; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;
         }
         .artwork p { color: var(--blue); font-weight: 900; font-size: 1.1rem; margin-top: 5px; }
         .artwork span { color: var(--blue); font-size: 0.8rem; font-weight: 400; opacity: 0.8; }
 
-        /* --- INFO --- */
+        /* --- INFO (RESTAURADO: Bio Completa) --- */
         #ovI { background: var(--y); color: var(--black); }
         .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
-        .info-text { text-transform: none; line-height: 1.6; font-size: 1.2rem; }
+        .info-text { text-transform: none; line-height: 1.6; font-size: 1.25rem; }
+        .contact-footer { margin-top: 50px; padding-top: 30px; border-top: 3px solid #000; display: flex; gap: 40px; }
+        .contact-footer a { color: black; font-weight: 900; font-size: 1.8rem; text-decoration: none; }
 
         @media (max-width: 600px) {
+            #ui-nav { left: auto; right: 25px; width: 80px; bottom: 30px; top: auto; height: 350px; }
+            .btn { position: absolute; left: 50% !important; transform: translateX(-50%) !important; animation: none !important; }
+            .btn-red-circle { width: 85px; height: 85px; bottom: 20px; } 
+            .btn-blue-square { width: 85px; height: 85px; bottom: 120px; } 
+            .btn-yellow-tri { width: 95px; height: 95px; bottom: 220px; padding-top: 25px; }
             .g-item { font-size: 2rem; grid-column: span 2; }
-            #main-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
+            #main-grid, .raw-content { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
             .gallery-works { grid-template-columns: 1fr 1fr; gap: 20px; }
             #ovW h1 { font-size: 18vw; }
         }
@@ -97,14 +122,16 @@
     <div id="closeX">X</div>
 
     <nav id="ui-nav">
-        <div id="btnR" class="btn btn-red">RAW</div>
-        <div id="btnW" class="btn btn-blue">WORKS</div>
-        <div id="btnI" class="btn btn-yellow">INFO</div>
+        <div id="btnR" class="btn btn-red-circle"><span>RAW</span></div>
+        <div id="btnW" class="btn btn-blue-square"><span>WORKS</span></div>
+        <div id="btnI" class="btn btn-yellow-tri"><span>INFO</span></div>
     </nav>
 
-    <div id="ovR" class="overlay" style="background: #000; color: #fff; padding: 100px 5vw;">
-        <h1 style="font-size: 10vw; text-align: center;">RAW</h1>
-        <div id="raw-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 5px; margin-top: 50px;"></div>
+    <div id="ovR" class="overlay">
+        <div class="raw-inner">
+            <h1>RAW</h1>
+            <div class="raw-content" id="raw-list"></div>
+        </div>
     </div>
 
     <div id="ovW" class="overlay">
@@ -119,7 +146,14 @@
         <div class="info-inner">
             <h1 style="font-size: 8vw; margin-bottom: 40px;">INFO</h1>
             <div class="info-text">
-                <p>Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design... [BIOGRAFÍA]</p>
+                <p style="margin-bottom: 25px;">Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design, with studies in his native Caracas, Venezuela, and Barcelona, Spain. While his professional career has been deeply rooted in industrial design and digital fabrication, he has consistently maintained an experimental artistic practice through printmaking. This work represents his most analog side, driven by a curiosity for manual techniques and the tactile possibilities of the material.</p>
+                <p style="margin-bottom: 25px;">His creative process is a search for static vibration through visual adjustments. This exploration of graphic possibilities focuses on what the image does visually rather than telling a specific story—letting form exist for its own sake.</p>
+                <p style="margin-bottom: 25px;">The search for balance avoids perfect symmetry, leaning instead into broken patterns and slight irregularities where a composition finds its own rhythm. In this process, empty space isn’t just background; it plays an active role in shaping the composition. Scale and color function as tools to push and pull, building a necessary tension within the plane.</p>
+                <p style="margin-bottom: 25px;">From this graphic order, Villarreal utilizes different printing techniques to produce his final pieces. The core interest lies in how the precision of the original design interacts with the material itself. This friction introduces small shifts and imperfections, distancing the work from digital perfection and giving it a more physical presence.</p>
+                <div class="contact-footer">
+                    <a href="https://www.instagram.com/lakraconk" target="_blank">IG</a>
+                    <a href="mailto:hola@lakraconk.com">✉</a>
+                </div>
             </div>
         </div>
     </div>
@@ -129,20 +163,32 @@
     </main>
 
     <script>
-        const variations = 11;
-        
+        const imgVariations = 11;
+        const types = ['s', 'm', 'w', 't'];
+
         // 1. Home Grid
         const grid = document.getElementById('main-grid');
         for (let i = 1; i <= 40; i++) {
             const div = document.createElement('div');
-            const type = ['','m','w'][Math.floor(Math.random()*3)];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const num = Math.floor(Math.random() * imgVariations) + 1;
             div.className = `item ${type}`;
-            const num = Math.floor(Math.random() * variations) + 1;
-            div.innerHTML = `<img src="img/s${num}.webp">`;
+            div.innerHTML = `<img src="img/${type}${num}.webp" loading="lazy">`;
             grid.appendChild(div);
         }
 
-        // 2. Llenar Works (Colección con bordes azules)
+        // 2. RAW Grid (RESTAURADO: Cuadrícula con colores aleatorios)
+        const rawList = document.getElementById('raw-list');
+        const rawColors = ['#FF0000', '#0000FF', '#FFFF00', '#FFFFFF', '#333333', '#00FF00', '#FF00FF'];
+        for (let i = 1; i <= 60; i++) {
+            const div = document.createElement('div');
+            const type = types[Math.floor(Math.random() * types.length)];
+            div.className = `raw-item ${type}`;
+            div.style.backgroundColor = rawColors[Math.floor(Math.random() * rawColors.length)];
+            rawList.appendChild(div);
+        }
+
+        // 3. Works Grid (Colección con bordes azules)
         const worksList = document.getElementById('works-list');
         const totalWorks = 10; // Ajusta cuántas piezas quieres mostrar
         for (let i = 1; i <= totalWorks; i++) {
@@ -156,7 +202,7 @@
             worksList.appendChild(art);
         }
 
-        // 3. Navegación
+        // 4. Navegación y Cierre
         const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
         const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
         const cl = document.getElementById('closeX');
@@ -165,6 +211,7 @@
             btn.onclick = () => {
                 overs[idx].style.display = 'block';
                 cl.style.display = 'block';
+                // Color de la X según sección
                 cl.style.color = (idx === 0) ? '#fff' : (idx === 1 ? 'var(--blue)' : '#000');
                 document.body.style.overflow = 'hidden';
             }
@@ -175,15 +222,6 @@
             cl.style.display = 'none';
             document.body.style.overflow = '';
         }
-
-        // 4. Parallax
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 40;
-            const y = (e.clientY / window.innerHeight - 0.5) * 40;
-            btns.forEach((b, i) => {
-                b.style.transform = `translate(${x * (i+1) * 0.5}px, ${y * (i+1) * 0.5}px)`;
-            });
-        });
     </script>
 </body>
 </html>
