@@ -3,119 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAKRACONK | Test 19</title>
+    <title>LAKRACONK | Official Site</title>
     <style>
         :root {
             --white: #ffffff;
             --black: #000000;
         }
 
-        body {
+        body, html {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--white);
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Helvetica', sans-serif;
+            overflow: hidden; /* Mantenemos el scroll bloqueado para el efecto app */
         }
 
-        /* Contenedor del Mosaico */
+        /* FONDO DE IMÁGENES (Mosaico dinámico) */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: 300px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-auto-rows: 250px;
             grid-auto-flow: dense;
             gap: 0;
+            filter: grayscale(1) contrast(1.2); /* Forzamos el look radical */
+            opacity: 0.8;
         }
 
-        /* Definición de celdas según tus formatos s, m, w, t */
-        .item { 
-            position: relative; 
-            overflow: hidden; 
-            background-color: var(--white);
-        }
-        
-        .item.s { grid-column: span 1; grid-row: span 1; } /* 300x300 */
-        .item.m { grid-column: span 2; grid-row: span 2; } /* 600x600 */
-        .item.w { grid-column: span 4; grid-row: span 2; } /* 1200x600 */
-        .item.t { grid-column: span 2; grid-row: span 4; } /* 600x1200 */
+        .item { position: relative; overflow: hidden; }
+        .item.s { grid-column: span 1; grid-row: span 1; }
+        .item.m { grid-column: span 2; grid-row: span 2; }
+        .item.w { grid-column: span 3; grid-row: span 1; }
+        .item.t { grid-column: span 1; grid-row: span 2; }
 
-        /* Estilo de tus artes WebP */
         .item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .item:hover img {
-            transform: scale(1.08);
-        }
-
-        /* El bloque negro que diseñaste */
-        .center-brand {
+        /* CAPA DE NAVEGACIÓN (TEST 19) */
+        .ui-layer {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Bloque Central */
+        .center-brand {
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: var(--black);
             color: var(--white);
-            padding: 20px 50px;
+            padding: 20px 60px;
             font-weight: 900;
             font-size: clamp(2rem, 8vw, 5rem);
             letter-spacing: -2px;
-            z-index: 100;
             text-align: center;
-            pointer-events: none;
-            box-shadow: 0 0 40px rgba(0,0,0,0.3);
-            text-transform: uppercase;
+            box-shadow: 20px 20px 0px rgba(0,0,0,0.1);
         }
 
-        /* Ajuste para móviles */
-        @media (max-width: 600px) {
-            .grid-container {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                grid-auto-rows: 150px;
-            }
-            .item.w { grid-column: span 2; }
+        /* Formas Flotantes */
+        .shape {
+            position: absolute;
+            background: var(--black);
+            pointer-events: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
         }
+
+        .shape:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: invert(1); /* Efecto negativo al pasar el mouse */
+        }
+
+        .shape span {
+            color: var(--white);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .shape:hover span { opacity: 1; }
+
+        /* Estilos de las Formas */
+        .circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            top: 15%;
+            left: 15%;
+        }
+
+        .square {
+            width: 110px;
+            height: 110px;
+            bottom: 20%;
+            right: 15%;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 70px solid transparent;
+            border-right: 70px solid transparent;
+            border-bottom: 120px solid var(--black);
+            background: none;
+            box-shadow: none;
+            bottom: 15%;
+            left: 20%;
+        }
+
+        .triangle span {
+            position: absolute;
+            top: 60px;
+            left: -30px;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="center-brand">LAKRACONK</div>
     <div class="grid-container" id="grid"></div>
 
+    <div class="ui-layer">
+        <div class="center-brand">LAKRACONK</div>
+
+        <div class="shape circle" onclick="alert('INFO: Jesus Villarreal')">
+            <span>Info</span>
+        </div>
+
+        <div class="shape square" onclick="alert('PORTFOLIO: Selected Prints')">
+            <span>Work</span>
+        </div>
+
+        <div class="shape triangle" onclick="alert('CONTACT: lakraconk@mail.com')">
+            <span>Mail</span>
+        </div>
+    </div>
+
     <script>
+        // Lógica del Mosaico (Fondo)
         const grid = document.getElementById('grid');
         const types = ['s', 'm', 'w', 't'];
-        const totalItemsInGrid = 60; // Cantidad de cuadros en el mosaico
-        const variationsPerType = 11; // Tienes archivos del 1 al 11 (s1, s2... s11)
+        const variations = 11;
 
-        function createGrid() {
-            for (let i = 0; i < totalItemsInGrid; i++) {
-                const type = types[Math.floor(Math.random() * types.length)];
-                const randomNum = Math.floor(Math.random() * variationsPerType) + 1;
-                
-                const div = document.createElement('div');
-                div.className = `item ${type}`;
-                
-                const img = document.createElement('img');
-                // Busca en tu carpeta 'img' los archivos .webp
-                img.src = `img/${type}${randomNum}.webp`;
-                img.alt = `LAKRACONK ${type}${randomNum}`;
-                
-                // Si falta alguna imagen, no muestra el cuadro roto
-                img.onerror = function() {
-                    this.parentElement.style.display = 'none';
-                };
-
-                div.appendChild(img);
-                grid.appendChild(div);
-            }
+        for (let i = 0; i < 50; i++) {
+            const type = types[Math.floor(Math.random() * types.length)];
+            const num = Math.floor(Math.random() * variations) + 1;
+            const item = document.createElement('div');
+            item.className = `item ${type}`;
+            const img = document.createElement('img');
+            img.src = `img/${type}${num}.webp`;
+            item.appendChild(img);
+            grid.appendChild(item);
         }
 
-        createGrid();
+        // Lógica de movimiento suave (El alma del Test 19)
+        const shapes = document.querySelectorAll('.shape');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 40;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 40;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                shape.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+            });
+        });
     </script>
 </body>
 </html>
