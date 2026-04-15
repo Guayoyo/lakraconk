@@ -10,6 +10,10 @@
             --r: #FF0000; --y: #FFFF00; --blue: #0000FF; 
             --black: #000; --white: #fff; 
             --transit: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            
+            /* Configuraciones de WORKS - Brutalist Grid */
+            --works-gap: 20px; /* Ancho de la separación blanca */
+            --works-cell-size: 150px; /* Tamaño base de la celda */
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -46,7 +50,7 @@
 
         #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; }
 
-        /* --- GRID DE FONDO --- */
+        /* --- HOME GRID DE FONDO --- */
         #main-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
@@ -60,6 +64,7 @@
         .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
         .item img { width: 100%; height: 101%; object-fit: cover; display: block; }
         
+        /* Tamaños Retícula */
         .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
         .item.w { grid-column: span 4; grid-row: span 2; }
@@ -80,9 +85,42 @@
             background: black; 
         }
 
+        /* --- SECCIÓN WORKS (Brutalist Grid con separaciones blancas) --- */
+        #ovW { background: white; }
+        .works-wrapper { padding: 100px var(--works-gap); }
+        .works-header { margin-bottom: 50px; font-size: 8vw; color: var(--blue); text-align: center; }
+        
+        .works-content { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(var(--works-cell-size), 1fr)); 
+            grid-auto-rows: var(--works-cell-size); 
+            grid-auto-flow: dense; 
+            width: 100%; 
+            max-width: 1400px; /* Para que no se estire infinito en desktop */
+            margin: 0 auto;
+            gap: var(--works-gap); 
+            background: white; 
+        }
+        .works-item { border: none; overflow: hidden; background: #eee; } /* El fondo es el color del stroke blanco */
+        .works-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        /* Tamaños Brutalistas de la Galería (Inspirados en la imagen de referencia) */
+        .works-item.s { grid-column: span 1; grid-row: span 1; } /* Cuadrado pequeño */
+        .works-item.m { grid-column: span 2; grid-row: span 2; } /* Cuadrado mediano */
+        .works-item.w { grid-column: span 3; grid-row: span 2; } /* Rectángulo ancho */
+        .works-item.t { grid-column: span 1; grid-row: span 2; } /* Rectángulo alto */
+
+        /* Marcadores de posición de color (para simular fotos futuras) */
+        .placeholder { display: block; width: 100%; height: 100%; }
+
         @media (max-width: 600px) {
             #main-grid, .raw-content { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); grid-auto-rows: 100px; }
             .g-item { font-size: 2rem; grid-column: span 2; grid-row: span 2; }
+            
+            /* Ajustes móviles para WORKS */
+            :root { --works-cell-size: 100px; --works-gap: 10px; }
+            .works-wrapper { padding-top: 80px; }
+            .works-item.w { grid-column: span 2; grid-row: span 1; } /* Evita que rompa el layout en móviles */
         }
     </style>
 </head>
@@ -101,9 +139,10 @@
     </div>
 
     <div id="ovW" class="overlay">
-        <div style="background: white; min-height: 100vh; padding: 100px 5vw;">
-            <h1 style="font-size: 8vw; color: var(--blue); text-align: center; margin-bottom: 50px;">WORKS</h1>
-            <div id="works-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px;"></div>
+        <div class="works-wrapper">
+            <h1 class="works-header">WORKS</h1>
+            <div class="works-content" id="works-list">
+                </div>
         </div>
     </div>
     
@@ -128,27 +167,98 @@
     </main>
 
     <script>
-        const types = ['s', 'm', 'w', 't'];
-        const variations = 11;
+        // Configuraciones generales
+        const imgVariations = 11;
+        const cl = document.getElementById('closeX');
 
+        // --- 1. HOME GRID ---
+        const types = ['s', 'm', 'w', 't'];
         const gridBg = document.getElementById('main-grid');
         for (let i = 1; i <= 200; i++) {
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
-            const num = Math.floor(Math.random() * variations) + 1;
+            const num = Math.floor(Math.random() * imgVariations) + 1;
             div.className = `item ${type}`;
             div.innerHTML = `<img src="img/${type}${num}.webp" loading="lazy">`;
             gridBg.appendChild(div);
         }
 
+        // --- 2. RAW GRID (Colores) ---
         const rawList = document.getElementById('raw-list');
-        const colors = ['#FF0000', '#0000FF', '#FFFF00', '#FFFFFF', '#333333', '#00FF00', '#FF00FF'];
+        const rawColors = ['#FF0000', '#0000FF', '#FFFF00', '#FFFFFF', '#333333', '#00FF00', '#FF00FF'];
         for (let i = 1; i <= 100; i++) {
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             div.className = `item ${type}`;
-            div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            div.style.backgroundColor = rawColors[Math.floor(Math.random() * rawColors.length)];
             rawList.appendChild(div);
         }
 
-        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')
+        // --- 3. WORKS GRID (Brutalist Referencia) ---
+        // Usamos una paleta de grises brutalista para los placeholders
+        const worksColors = ['#F0F0F0', '#EAEAEA', '#DDDDDD', '#D2D2D2', '#C0C0C0', '#B0B0B0', '#AAAAAA'];
+        const worksList = document.getElementById('works-list');
+        const worksTypes = ['s', 'm', 'w', 't'];
+        
+        // Generamos bloques simulados (futuros cuadros)
+        for (let i = 1; i <= 30; i++) {
+            const div = document.createElement('div');
+            const type = worksTypes[Math.floor(Math.random() * worksTypes.length)];
+            div.className = `works-item ${type}`;
+            
+            // Creamos el placeholder de color
+            const placeholder = document.createElement('div');
+            placeholder.className = 'placeholder';
+            placeholder.style.backgroundColor = worksColors[Math.floor(Math.random() * worksColors.length)];
+            
+            div.appendChild(placeholder);
+            
+            /* CUANDO TENGAS LAS FOTOS, COMENTA LO DE ARRIBA Y USA ESTO:
+              const img = document.createElement('img');
+              img.src = `ruta/a/tu/imagen_${i}.webp`; // O como las nombres
+              img.loading = 'lazy';
+              div.appendChild(img);
+            */
+            
+            worksList.appendChild(div);
+        }
+
+        // --- 4. LÓGICA DE BOTONES EXPANSIBLES (NAVEGACIÓN) ---
+        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
+        const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
+
+        btns.forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                const r = btn.getBoundingClientRect();
+                btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
+                btn.classList.add('no-shape');
+                setTimeout(() => {
+                    btn.classList.add('expanded'); 
+                    overs[idx].classList.add('show'); 
+                    cl.style.display = 'block';
+                    
+                    // Ajuste de color de la X de cierre según la sección
+                    if(idx === 0) cl.style.color = '#fff'; // RAW (Fondo Negro)
+                    if(idx === 1) cl.style.color = 'var(--blue)'; // WORKS (Fondo Blanco, Título Azul)
+                    if(idx === 2) cl.style.color = '#000'; // INFO (Fondo Amarillo)
+                    
+                    document.body.style.overflow = 'hidden';
+                }, 20);
+            });
+        });
+
+        // --- 5. LÓGICA DE CIERRE (X) ---
+        cl.onclick = () => {
+            document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
+            document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
+            cl.style.display = 'none';
+            
+            // Reset de estilos de la X
+            cl.style.color = ''; 
+            
+            document.body.style.overflow = '';
+            setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
+        };
+    </script>
+</body>
+</html>
