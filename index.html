@@ -14,16 +14,17 @@
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* SCROLL HABILITADO */
-        body { 
+        /* SCROLL TOTALMENTE HABILITADO */
+        html, body { 
             background: var(--white); 
-            overflow-x: hidden; 
-            overflow-y: auto; 
+            height: auto;
+            min-height: 100%;
             width: 100%;
-            min-height: 100vh;
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
         }
+
+        body { overflow-x: hidden; overflow-y: auto; }
 
         /* --- ÓRBITAS ESCRITORIO --- */
         @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
@@ -40,26 +41,22 @@
         .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
         .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
 
-        /* --- X DE CIERRE --- */
-        #closeX { 
-            position: fixed; top: 25px; right: 25px; z-index: 11000; 
-            font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; 
-        }
+        #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
         #closeX.is-info { color: #000 !important; mix-blend-mode: normal; }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; background: var(--white); }
         .show { display: block !important; }
 
-        /* --- HOME GRID --- */
+        /* --- HOME GRID (REFORZADO) --- */
         #main-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
             grid-auto-rows: 150px; 
             grid-auto-flow: dense; 
-            gap: 0; 
             width: 100%;
+            background: #fff;
         }
-        .item { overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+        .item { overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
         .item img { width: 100%; height: 101%; object-fit: cover; display: block; }
         
         .item.s { grid-column: span 1; grid-row: span 1; }
@@ -67,15 +64,14 @@
         .item.w { grid-column: span 4; grid-row: span 2; }
         .item.t { grid-column: span 2; grid-row: span 4; }
         
-        .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; display: flex; align-items: center; justify-content: center; font-weight: 900; position: relative; z-index: 2; }
 
-        /* --- INFO --- */
+        /* --- SECCIONES --- */
         #ovI { background: var(--y); color: #000; }
         .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
         .info-text { text-transform: none; line-height: 1.5; font-size: 1.25rem; }
         .info-text p { margin-bottom: 25px; }
 
-        /* --- WORKS --- */
         .works-inner { padding: 80px 5vw; background: white; text-align: center; }
         .works-inner h1 { font-size: 10vw; color: var(--blue); margin-bottom: 60px; }
         .gallery-works { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 50px 30px; max-width: 1600px; margin: 0 auto; }
@@ -83,7 +79,6 @@
         .artwork p { color: var(--blue); font-weight: 900; font-size: 1.1rem; }
         .artwork span { color: var(--blue); font-size: 0.8rem; }
 
-        /* --- MÓVIL (Developer Mode) --- */
         @media (max-width: 600px) {
             #astronaut-group { left: auto; right: 25px; bottom: 30px; top: auto; width: 100px; height: 320px; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; }
             .btn { position: relative !important; top: auto !important; left: auto !important; transform: none !important; animation: none !important; margin-top: 15px; }
@@ -122,7 +117,7 @@
 
     <main id="main-grid">
         <div class="item g-item">LAKRA<br>CONK</div>
-    </main>
+        </main>
 
     <script>
         const types = ['s', 'm', 'w', 't'];
@@ -165,9 +160,9 @@
             setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
         };
 
-        // Generar muro de imágenes (aumentado para permitir scroll)
+        // LLENADO DEL GRID - MÁS IMÁGENES PARA FORZAR SCROLL
         const grid = document.getElementById('main-grid');
-        for (let i = 1; i <= 80; i++) {
+        for (let i = 1; i <= 100; i++) {
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             div.className = `item ${type}`;
