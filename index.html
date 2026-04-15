@@ -2,175 +2,143 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAKRACONK | Jesus Villarreal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --r: #FF0000; --y: #FFFF00; --blue: #0000FF; 
             --black: #000; --white: #fff; 
-            --transit: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: var(--white); 
-            overflow-x: hidden; 
-            width: 100%;
-            min-height: 100dvh;
-            font-family: 'Outfit', sans-serif;
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Outfit', sans-serif; background: #000; }
+
+        /* --- FONDO DE IMÁGENES --- */
+        #main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-auto-rows: 200px;
+            grid-auto-flow: dense;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            z-index: 1;
+        }
+        .item { border: 1px solid #000; overflow: hidden; }
+        .item img { width: 100%; height: 100%; object-fit: cover; }
+        .item.m { grid-column: span 2; grid-row: span 2; }
+        .item.w { grid-column: span 3; }
+
+        /* --- UI CENTRAL --- */
+        .center-brand {
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #000; color: #fff;
+            padding: 20px 60px; font-size: 5rem; font-weight: 900;
+            z-index: 10; letter-spacing: -4px; pointer-events: none;
             text-transform: uppercase;
         }
 
-        /* --- ANIMACIONES DE ÓRBITA (Test 19) --- */
-        @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
-        @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
-        @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
+        /* --- BOTONES FLOTANTES --- */
+        .btn { 
+            position: fixed; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: #fff; z-index: 100; font-weight: 900;
+            transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s, border-radius 0.6s;
+            text-decoration: none;
+        }
 
-        #astronaut-group { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; pointer-events: none; }
-        .btn { position: fixed; display: flex; align-items: center; justify-content: center; transition: var(--transit); cursor: pointer; color: var(--white); border: none; pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10; font-weight: 900; }
-        
-        /* EXPANSIÓN */
-        .no-shape { border-radius: 0 !important; clip-path: none !important; transition: none !important; }
-        .expanded { top: 0 !important; left: 0 !important; width: 100vw !important; height: 100dvh !important; animation: none !important; z-index: 10000 !important; transform: none !important; margin: 0 !important; }
+        .btn-raw { width: 120px; height: 120px; background: var(--r); border-radius: 50%; top: 20%; left: 15%; }
+        .btn-works { width: 110px; height: 110px; background: var(--blue); top: 50%; right: 10%; }
+        .btn-info { 
+            width: 140px; height: 140px; background: var(--y); color: #000;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            bottom: 15%; left: 20%; padding-top: 40px;
+        }
 
-        .btn-red-circle { width: 125px; height: 125px; background: var(--r); border-radius: 50%; animation: orb1 40s linear infinite; }
-        .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
-        .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
+        /* --- ESTADO EXPANDIDO --- */
+        .expanded {
+            top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+            width: 100vw !important; height: 100vh !important;
+            border-radius: 0 !important; clip-path: none !important;
+            z-index: 9999 !important;
+        }
 
-        #btnW.expanded { background-color: var(--white) !important; color: var(--blue) !important; transition: none; }
-        #btnR.expanded { background-color: var(--black) !important; }
-        
-        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; overflow-x: hidden; padding: 0; background: transparent; }
-        .show { display: block !important; }
+        .content-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10000; display: none; padding: 100px 10%;
+            overflow-y: auto; color: #fff;
+        }
 
-        #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
-
-        /* --- SECCIÓN RAW (Con tus imágenes) --- */
-        .raw-header { position: absolute; top: 0; width: 100%; z-index: 100; padding: 80px 0 40px 0; background: transparent; pointer-events: none; }
-        .raw-header h1 { color: #fff; mix-blend-mode: difference; font-size: 8vw; letter-spacing: -4px; font-weight: 900; text-align: center; }
-        .raw-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-rows: 250px; grid-auto-flow: dense; width: 100%; gap: 0; background: black; }
-        .raw-item { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- GRID DE FONDO (Con tus imágenes) --- */
-        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 10px; padding: 10px; width: 100vw; min-height: 100vh; }
-        .item { border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
-        .item img { width: 100%; height: 100%; object-fit: cover; }
-        .item.s { grid-column: span 1; grid-row: span 1; }
-        .item.m { grid-column: span 2; grid-row: span 2; }
-        .item.w { grid-column: span 4; grid-row: span 2; }
-        .item.t { grid-column: span 2; grid-row: span 4; }
-        
-        .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 900; }
-
-        /* --- INFO SECCIÓN --- */
-        #ovI { background: var(--y); color: #000; }
-        .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
-        .info-text { text-transform: none; line-height: 1.5; font-size: 1.2rem; }
-        .contact-footer { margin-top: 50px; padding-top: 30px; border-top: 3px solid #000; display: flex; gap: 40px; }
-        .contact-footer a { color: #000; text-decoration: none; font-weight: 900; font-size: 1.8rem; }
-
-        @media (max-width: 600px) {
-            #astronaut-group { left: auto; right: 25px; width: 80px; bottom: 30px; top: auto; height: 350px; }
-            .btn { position: absolute; left: 50% !important; transform: translateX(-50%) !important; animation: none !important; }
-            .btn-red-circle { width: 85px; height: 85px; bottom: 20px; } 
-            .btn-blue-square { width: 85px; height: 85px; bottom: 120px; } 
-            .btn-yellow-tri { width: 95px; height: 95px; bottom: 220px; padding-top: 25px; }
-            .g-item { font-size: 2rem; grid-column: span 2; grid-row: span 2; }
+        #closeX {
+            position: fixed; top: 30px; right: 30px; z-index: 10001;
+            font-size: 40px; color: #fff; cursor: pointer; display: none; font-weight: 900;
         }
     </style>
 </head>
 <body>
+
     <div id="closeX">X</div>
+    <div class="center-brand">LAKRACONK</div>
     
-    <div id="astronaut-group">
-        <div id="btnR" class="btn btn-red-circle"><span>RAW</span></div>
-        <div id="btnW" class="btn btn-blue-square"><span>WORKS</span></div>
-        <div id="btnI" class="btn btn-yellow-tri"><span>INFO</span></div>
-    </div>
+    <div id="btnR" class="btn btn-raw">RAW</div>
+    <div id="btnW" class="btn btn-works">WORKS</div>
+    <div id="btnI" class="btn btn-info">INFO</div>
 
-    <div id="ovR" class="overlay">
-        <div class="raw-header"><h1>RAW</h1></div>
-        <div class="raw-content" id="raw-list"></div>
-    </div>
+    <main id="main-grid"></main>
 
-    <div id="ovW" class="overlay">
-        <div style="background: white; min-height: 100vh; padding: 100px 5vw;">
-            <h1 style="font-size: 8vw; color: var(--blue); text-align: center; margin-bottom: 50px;">WORKS</h1>
-            <div id="works-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px;"></div>
-        </div>
+    <div id="ov" class="content-overlay">
+        <h1 id="ov-title" style="font-size: 5rem; margin-bottom: 20px;"></h1>
+        <p id="ov-text" style="font-size: 1.5rem; line-height: 1.4; text-transform: none;"></p>
     </div>
-    
-    <div id="ovI" class="overlay">
-        <div class="info-inner">
-            <h1>INFO</h1>
-            <div class="info-text">
-                <p>Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design...</p>
-                <div class="contact-footer">
-                    <a href="https://www.instagram.com/lakraconk" target="_blank">IG</a>
-                    <a href="mailto:hola@lakraconk.com">✉</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <main id="main-grid">
-        <div class="item g-item">LAKRA<br>CONK</div>
-    </main>
 
     <script>
-        const types = ['s', 'm', 'w', 't'];
-        const variations = 11;
-
-        // Llenar Fondo Principal
-        const gridBg = document.getElementById('main-grid');
-        for (let i = 1; i <= 40; i++) {
+        const grid = document.getElementById('main-grid');
+        const types = ['', 'm', 'w'];
+        
+        // Crear Fondo
+        for (let i = 0; i < 40; i++) {
+            const type = types[Math.floor(Math.random() * types.length)];
             const div = document.createElement('div');
-            const type = types[Math.floor(Math.random() * types.length)];
-            const num = Math.floor(Math.random() * variations) + 1;
             div.className = `item ${type}`;
-            div.innerHTML = `<img src="img/${type}${num}.webp" loading="lazy">`;
-            gridBg.appendChild(div);
+            const num = Math.floor(Math.random() * 11) + 1;
+            const t = ['s','m','w','t'][Math.floor(Math.random()*4)];
+            div.innerHTML = `<img src="img/${t}${num}.webp">`;
+            grid.appendChild(div);
         }
 
-        // Llenar RAW (Caos de imágenes)
-        const rawList = document.getElementById('raw-list');
-        for (let i = 1; i <= 60; i++) {
-            const type = types[Math.floor(Math.random() * types.length)];
-            const num = Math.floor(Math.random() * variations) + 1;
-            const img = document.createElement('img');
-            img.className = 'raw-item';
-            img.src = `img/${type}${num}.webp`;
-            rawList.appendChild(img);
-        }
+        // Lógica de Expansión
+        const btns = document.querySelectorAll('.btn');
+        const ov = document.getElementById('ov');
+        const closeX = document.getElementById('closeX');
+        const infoText = "Jesus Villarreal (@lakraconk) is a visual artist and designer exploring static vibration through manual printmaking and experimental graphics.";
 
-        // Lógica de Botones Expansibles (Test 19 Original)
-        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
-        const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
-        const cl = document.getElementById('closeX');
-
-        btns.forEach((btn, idx) => {
-            btn.addEventListener('click', () => {
-                const r = btn.getBoundingClientRect();
-                btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
-                btn.classList.add('no-shape');
+        btns.forEach(btn => {
+            btn.onclick = () => {
+                btn.classList.add('expanded');
                 setTimeout(() => {
-                    btn.classList.add('expanded'); 
-                    overs[idx].classList.add('show'); 
-                    cl.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }, 20);
-            });
+                    ov.style.display = 'block';
+                    closeX.style.display = 'block';
+                    document.getElementById('ov-title').innerText = btn.innerText;
+                    document.getElementById('ov-text').innerText = btn.innerText === "INFO" ? infoText : "Contenido en construcción...";
+                }, 600);
+            };
         });
 
-        cl.onclick = () => {
-            document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
-            document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
-            cl.style.display = 'none';
-            document.body.style.overflow = '';
-            setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
+        closeX.onclick = () => {
+            document.querySelector('.expanded').classList.remove('expanded');
+            ov.style.display = 'none';
+            closeX.style.display = 'none';
         };
+
+        // Movimiento Parallax suave
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 50;
+            const y = (e.clientY / window.innerHeight - 0.5) * 50;
+            btns.forEach((btn, i) => {
+                const speed = (i + 1) * 0.4;
+                btn.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
     </script>
 </body>
 </html>
