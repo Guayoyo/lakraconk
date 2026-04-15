@@ -51,23 +51,22 @@
         .show { display: block !important; }
 
         /* --- HOME GRID --- */
-        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 0; padding: 0; width: 100vw; }
-        .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
+        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 0; padding: 0; width: 100vw; min-height: 100vh; position: relative; z-index: 1; }
+        .item { border: none; display: flex; align-items: center; justify-content: center; background: #eee; overflow: hidden; }
         .item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .item.s { grid-column: span 1; grid-row: span 1; }
+        .item.m { grid-column: span 2; grid-row: span 2; }
+        .item.w { grid-column: span 4; grid-row: span 2; }
+        .item.t { grid-column: span 2; grid-row: span 4; }
         .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* --- INFO --- */
+        /* --- SECCIONES --- */
         #ovI { background: var(--y); color: #000; }
         .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
         .info-text { text-transform: none; line-height: 1.5; font-size: 1.2rem; }
 
-        /* --- MÓVIL (Developer Mode) --- */
         @media (max-width: 600px) {
-            #astronaut-group { 
-                left: auto; right: 25px; bottom: 30px; top: auto; 
-                width: 100px; height: 320px; pointer-events: none; 
-                display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start;
-            }
+            #astronaut-group { left: auto; right: 25px; bottom: 30px; top: auto; width: 100px; height: 320px; pointer-events: none; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; }
             .btn { position: relative !important; top: auto !important; left: auto !important; transform: none !important; animation: none !important; margin-top: 15px; pointer-events: auto; }
             .btn-red-circle { width: 85px; height: 85px; order: 1; }
             .btn-blue-square { width: 80px; height: 80px; order: 2; }
@@ -81,8 +80,8 @@
     <div id="closeX">X</div>
     <div id="astronaut-group"></div>
 
-    <div id="ovR" class="overlay"><div style="background: black; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 10vw;">RAW</h1></div></div>
-    <div id="ovW" class="overlay"><div style="background: white; padding: 100px 0;"><h1 style="color: var(--blue); text-align: center; font-size: 10vw;">WORKS</h1></div></div>
+    <div id="ovR" class="overlay"><div style="background: black; min-height: 100vh; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 10vw;">RAW</h1></div></div>
+    <div id="ovW" class="overlay"><div style="background: white; min-height: 100vh; padding: 100px 0;"><h1 style="color: var(--blue); text-align: center; font-size: 10vw;">WORKS</h1></div></div>
     <div id="ovI" class="overlay">
         <div class="info-inner">
             <h1 style="font-size: 8vw; margin-bottom: 40px;">INFO</h1>
@@ -106,16 +105,15 @@
             { id: 'I', label: 'INFO', class: 'btn-yellow-tri' }
         ];
 
-        const btns = [];
         sections.forEach(sec => {
             const btn = document.createElement('div');
             btn.id = `btn${sec.id}`;
             btn.className = `btn ${sec.class}`;
             btn.innerHTML = `<span>${sec.label}</span>`;
             group.appendChild(btn);
-            btns.push(btn);
         });
 
+        const btns = document.querySelectorAll('.btn');
         const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
         const cl = document.getElementById('closeX');
 
@@ -147,9 +145,8 @@
             setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
         };
 
-        // Rellenar Home Grid
         const grid = document.getElementById('main-grid');
-        for (let i = 1; i <= 30; i++) {
+        for (let i = 1; i <= 35; i++) {
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             div.className = `item ${type}`;
