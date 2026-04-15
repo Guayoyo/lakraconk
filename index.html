@@ -17,13 +17,13 @@
         body { 
             background: var(--white); 
             overflow-x: hidden; 
-            width: 100%;
+            width: 100vw;
             min-height: 100dvh;
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
         }
 
-        /* --- ÓRBITAS UI --- */
+        /* --- ÓRBITAS ESCRITORIO --- */
         @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
         @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
         @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
@@ -38,32 +38,28 @@
         .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
         .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
 
-        #btnW.expanded { background-color: var(--white) !important; color: var(--blue) !important; transition: none; }
-        #btnR.expanded { background-color: var(--black) !important; }
-        
-        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; overflow-x: hidden; padding: 0; background: transparent; }
-        .show { display: block !important; }
-
         #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
         #closeX.is-info { color: #000 !important; mix-blend-mode: normal; }
 
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; background: var(--white); }
+        .show { display: block !important; }
+
         /* --- HOME GRID --- */
-        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 0; padding: 0; width: 100vw; min-height: 100vh; }
-        .item { border: none; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
-        .item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; width: 100vw; }
+        .item { border: none; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; }
+        .item img { width: 100%; height: 101%; object-fit: cover; display: block; }
         
         .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* --- SECCIÓN WORKS (ESTILO COLECCIÓN) --- */
-        .works-inner { padding: 80px 5vw; background: white; min-height: 100vh; text-align: center; }
-        .works-inner h1 { font-size: 10vw; color: var(--blue); margin-bottom: 60px; font-weight: 900; }
+        /* --- WORKS GALERÍA --- */
+        .works-inner { padding: 80px 5vw; background: white; text-align: center; }
+        .works-inner h1 { font-size: 10vw; color: var(--blue); margin-bottom: 60px; }
         .gallery-works { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 50px 30px; max-width: 1600px; margin: 0 auto; }
-        .artwork { display: flex; flex-direction: column; align-items: center; }
         .artwork-box { width: 100%; aspect-ratio: 32 / 41; border: 5px solid var(--blue); background: #f4f4f4; margin-bottom: 15px; }
-        .artwork p { color: var(--blue); font-weight: 900; font-size: 1.1rem; margin-top: 5px; }
-        .artwork span { color: var(--blue); font-size: 0.8rem; font-weight: 400; }
+        .artwork p { color: var(--blue); font-weight: 900; font-size: 1.1rem; }
+        .artwork span { color: var(--blue); font-size: 0.8rem; }
 
-        /* --- INFO (BIO COMPLETA) --- */
+        /* --- INFO --- */
         #ovI { background: var(--y); color: #000; }
         .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
         .info-text { text-transform: none; line-height: 1.5; font-size: 1.25rem; }
@@ -82,20 +78,15 @@
 </head>
 <body>
     <div id="closeX">X</div>
-    
     <div id="astronaut-group"></div>
 
-    <div id="ovR" class="overlay">
-        <div style="background: black; min-height: 100vh; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 10vw;">RAW</h1></div>
-    </div>
-
+    <div id="ovR" class="overlay"><div style="background: black; min-height: 100vh; padding: 100px 0;"><h1 style="color: white; text-align: center; font-size: 10vw;">RAW</h1></div></div>
     <div id="ovW" class="overlay">
         <div class="works-inner">
             <h1>WORKS</h1>
             <div class="gallery-works" id="works-list"></div>
         </div>
     </div>
-    
     <div id="ovI" class="overlay">
         <div class="info-inner">
             <h1>INFO</h1>
@@ -108,9 +99,7 @@
         </div>
     </div>
 
-    <main id="main-grid">
-        <div class="item g-item">LAKRA<br>CONK</div>
-    </main>
+    <main id="main-grid"><div class="item g-item">LAKRA<br>CONK</div></main>
 
     <script>
         const types = ['s', 'm', 'w', 't'];
@@ -121,16 +110,14 @@
             { id: 'I', label: 'INFO', class: 'btn-yellow-tri' }
         ];
 
-        const btns = [];
         sections.forEach(sec => {
             const btn = document.createElement('div');
-            btn.id = `btn${sec.id}`;
-            btn.className = `btn ${sec.class}`;
+            btn.id = `btn${sec.id}`; btn.className = `btn ${sec.class}`;
             btn.innerHTML = `<span>${sec.label}</span>`;
             group.appendChild(btn);
-            btns.push(btn);
         });
 
+        const btns = document.querySelectorAll('.btn');
         const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
         const cl = document.getElementById('closeX');
 
@@ -141,8 +128,7 @@
                 btn.classList.add('no-shape');
                 setTimeout(() => {
                     btn.classList.add('expanded'); 
-                    overs[idx].classList.add('show'); 
-                    cl.style.display = 'block';
+                    overs[idx].classList.add('show'); cl.style.display = 'block';
                     if(idx === 2) cl.classList.add('is-info'); else cl.classList.remove('is-info');
                     document.body.style.overflow = 'hidden';
                 }, 20);
@@ -152,19 +138,18 @@
         cl.onclick = () => {
             document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
             document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
-            cl.style.display = 'none';
-            document.body.style.overflow = '';
+            cl.style.display = 'none'; document.body.style.overflow = '';
             setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
         };
 
-        const gridBg = document.getElementById('main-grid');
-        for (let i = 1; i <= 30; i++) {
+        const grid = document.getElementById('main-grid');
+        for (let i = 1; i <= 60; i++) { // Más imágenes para asegurar cobertura
             const div = document.createElement('div');
             const type = types[Math.floor(Math.random() * types.length)];
             div.className = `item ${type}`;
             const num = Math.floor(Math.random() * 11) + 1;
-            div.innerHTML = `<img src="img/s${num}.webp" loading="lazy">`;
-            gridBg.appendChild(div);
+            div.innerHTML = `<img src="img/s${num}.webp">`;
+            grid.appendChild(div);
         }
 
         const worksList = document.getElementById('works-list');
