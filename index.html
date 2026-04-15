@@ -1,169 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAKRACONK | Test 19</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LAKRACONK | Jesus Villarreal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --white: #ffffff;
-            --black: #000000;
+        :root { 
+            --r: #FF0000; --y: #FFFF00; --blue: #0000FF; 
+            --black: #000; --white: #fff; 
+            --transit: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
-
-        body, html {
-            margin: 0;
-            padding: 0;
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--white); 
+            overflow-x: hidden; 
             width: 100%;
-            height: 100%;
-            background-color: var(--black);
-            font-family: 'Helvetica', sans-serif;
-            overflow: hidden;
+            min-height: 100dvh;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
         }
 
-        /* MOSAICO DE FONDO */
-        #grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: 300px;
-            grid-auto-flow: dense;
-            z-index: 1; /* Fondo */
-            opacity: 0.9;
-        }
+        /* --- ANIMACIONES DE ÓRBITA (Test 19) --- */
+        @keyframes orb1 { 0%, 100% { top: 15%; left: 10%; transform: rotate(0deg); } 50% { top: 75%; left: 80%; transform: rotate(180deg); } }
+        @keyframes orb2 { 0%, 100% { top: 80%; left: 70%; transform: rotate(0deg); } 50% { top: 15%; left: 20%; transform: rotate(-180deg); } }
+        @keyframes orb3 { 0%, 100% { top: 50%; left: 80%; transform: rotate(0deg); } 50% { top: 50%; left: 10%; transform: rotate(360deg); } }
 
-        .item { position: relative; overflow: hidden; border: 0.5px solid rgba(255,255,255,0.1); }
+        #astronaut-group { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; pointer-events: none; }
+        .btn { position: fixed; display: flex; align-items: center; justify-content: center; transition: var(--transit); cursor: pointer; color: var(--white); border: none; pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10; font-weight: 900; }
+        
+        /* EXPANSIÓN */
+        .no-shape { border-radius: 0 !important; clip-path: none !important; transition: none !important; }
+        .expanded { top: 0 !important; left: 0 !important; width: 100vw !important; height: 100dvh !important; animation: none !important; z-index: 10000 !important; transform: none !important; margin: 0 !important; }
+
+        .btn-red-circle { width: 125px; height: 125px; background: var(--r); border-radius: 50%; animation: orb1 40s linear infinite; }
+        .btn-blue-square { width: 115px; height: 115px; background: var(--blue); animation: orb3 60s linear infinite; }
+        .btn-yellow-tri { width: 145px; height: 145px; background: var(--y); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: orb2 50s linear infinite; padding-top: 35px; color: var(--black); }
+
+        #btnW.expanded { background-color: var(--white) !important; color: var(--blue) !important; transition: none; }
+        #btnR.expanded { background-color: var(--black) !important; }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 10001; display: none; overflow-y: auto; overflow-x: hidden; padding: 0; background: transparent; }
+        .show { display: block !important; }
+
+        #closeX { position: fixed; top: 25px; right: 25px; z-index: 11000; font-size: 45px; cursor: pointer; display: none; font-weight: 900; line-height: 1; mix-blend-mode: difference; color: white; }
+
+        /* --- SECCIÓN RAW (Con tus imágenes) --- */
+        .raw-header { position: absolute; top: 0; width: 100%; z-index: 100; padding: 80px 0 40px 0; background: transparent; pointer-events: none; }
+        .raw-header h1 { color: #fff; mix-blend-mode: difference; font-size: 8vw; letter-spacing: -4px; font-weight: 900; text-align: center; }
+        .raw-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-rows: 250px; grid-auto-flow: dense; width: 100%; gap: 0; background: black; }
+        .raw-item { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- GRID DE FONDO (Con tus imágenes) --- */
+        #main-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 10px; padding: 10px; width: 100vw; min-height: 100vh; }
+        .item { border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; }
+        .item img { width: 100%; height: 100%; object-fit: cover; }
         .item.s { grid-column: span 1; grid-row: span 1; }
         .item.m { grid-column: span 2; grid-row: span 2; }
-        .item.w { grid-column: span 3; grid-row: span 1; }
-        .item.t { grid-column: span 1; grid-row: span 2; }
+        .item.w { grid-column: span 4; grid-row: span 2; }
+        .item.t { grid-column: span 2; grid-row: span 4; }
+        
+        .g-item { grid-column: span 4; grid-row: span 4; background: #000; color: #fff; font-size: 3.5rem; text-align: center; line-height: 0.8; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 900; }
 
-        .item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        /* --- INFO SECCIÓN --- */
+        #ovI { background: var(--y); color: #000; }
+        .info-inner { padding: 100px 10vw; max-width: 900px; margin: 0 auto; }
+        .info-text { text-transform: none; line-height: 1.5; font-size: 1.2rem; }
+        .contact-footer { margin-top: 50px; padding-top: 30px; border-top: 3px solid #000; display: flex; gap: 40px; }
+        .contact-footer a { color: #000; text-decoration: none; font-weight: 900; font-size: 1.8rem; }
+
+        @media (max-width: 600px) {
+            #astronaut-group { left: auto; right: 25px; width: 80px; bottom: 30px; top: auto; height: 350px; }
+            .btn { position: absolute; left: 50% !important; transform: translateX(-50%) !important; animation: none !important; }
+            .btn-red-circle { width: 85px; height: 85px; bottom: 20px; } 
+            .btn-blue-square { width: 85px; height: 85px; bottom: 120px; } 
+            .btn-yellow-tri { width: 95px; height: 95px; bottom: 220px; padding-top: 25px; }
+            .g-item { font-size: 2rem; grid-column: span 2; grid-row: span 2; }
         }
-
-        /* CAPA DE INTERFAZ (UI) */
-        .ui-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 100; /* Encima de todo */
-            pointer-events: none;
-        }
-
-        .center-brand {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--black);
-            color: var(--white);
-            padding: 20px 60px;
-            font-weight: 900;
-            font-size: clamp(2rem, 8vw, 6rem);
-            letter-spacing: -3px;
-            pointer-events: auto;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        /* FORMAS GEOMÉTRICAS */
-        .shape {
-            position: absolute;
-            background: var(--white);
-            mix-blend-mode: difference; /* Esto hará que cambien de color según el fondo */
-            pointer-events: auto;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-        }
-
-        .circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            top: 20%;
-            left: 20%;
-        }
-
-        .square {
-            width: 90px;
-            height: 90px;
-            bottom: 25%;
-            right: 20%;
-        }
-
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 60px solid transparent;
-            border-right: 60px solid transparent;
-            border-bottom: 100px solid var(--white);
-            background: transparent;
-            bottom: 25%;
-            left: 20%;
-        }
-
-        .shape span {
-            color: var(--black);
-            font-weight: bold;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .shape:hover span { opacity: 1; }
     </style>
 </head>
 <body>
-
-    <div id="grid"></div>
-
-    <div class="ui-layer">
-        <div class="center-brand">LAKRACONK</div>
-        
-        <div class="shape circle"><span>Info</span></div>
-        <div class="shape square"><span>Work</span></div>
-        <div class="shape triangle"><span>Mail</span></div>
+    <div id="closeX">X</div>
+    
+    <div id="astronaut-group">
+        <div id="btnR" class="btn btn-red-circle"><span>RAW</span></div>
+        <div id="btnW" class="btn btn-blue-square"><span>WORKS</span></div>
+        <div id="btnI" class="btn btn-yellow-tri"><span>INFO</span></div>
     </div>
 
-    <script>
-        const grid = document.getElementById('grid');
-        const types = ['s', 'm', 'w', 't'];
-        const total = 40;
+    <div id="ovR" class="overlay">
+        <div class="raw-header"><h1>RAW</h1></div>
+        <div class="raw-content" id="raw-list"></div>
+    </div>
 
-        for (let i = 0; i < total; i++) {
-            const type = types[Math.floor(Math.random() * types.length)];
-            const num = Math.floor(Math.random() * 11) + 1;
+    <div id="ovW" class="overlay">
+        <div style="background: white; min-height: 100vh; padding: 100px 5vw;">
+            <h1 style="font-size: 8vw; color: var(--blue); text-align: center; margin-bottom: 50px;">WORKS</h1>
+            <div id="works-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px;"></div>
+        </div>
+    </div>
+    
+    <div id="ovI" class="overlay">
+        <div class="info-inner">
+            <h1>INFO</h1>
+            <div class="info-text">
+                <p>Jesus Villarreal (@lakraconk) has a background in both Graphic and Industrial Design...</p>
+                <div class="contact-footer">
+                    <a href="https://www.instagram.com/lakraconk" target="_blank">IG</a>
+                    <a href="mailto:hola@lakraconk.com">✉</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-grid">
+        <div class="item g-item">LAKRA<br>CONK</div>
+    </main>
+
+    <script>
+        const types = ['s', 'm', 'w', 't'];
+        const variations = 11;
+
+        // Llenar Fondo Principal
+        const gridBg = document.getElementById('main-grid');
+        for (let i = 1; i <= 40; i++) {
             const div = document.createElement('div');
+            const type = types[Math.floor(Math.random() * types.length)];
+            const num = Math.floor(Math.random() * variations) + 1;
             div.className = `item ${type}`;
-            const img = document.createElement('img');
-            img.src = `img/${type}${num}.webp`;
-            div.appendChild(img);
-            grid.appendChild(div);
+            div.innerHTML = `<img src="img/${type}${num}.webp" loading="lazy">`;
+            gridBg.appendChild(div);
         }
 
-        // FÍSICA DE MOVIMIENTO
-        const shapes = document.querySelectorAll('.shape');
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 60;
-            const y = (e.clientY / window.innerHeight - 0.5) * 60;
-            
-            shapes.forEach((s, i) => {
-                const factor = (i + 1) * 0.8;
-                s.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+        // Llenar RAW (Caos de imágenes)
+        const rawList = document.getElementById('raw-list');
+        for (let i = 1; i <= 60; i++) {
+            const type = types[Math.floor(Math.random() * types.length)];
+            const num = Math.floor(Math.random() * variations) + 1;
+            const img = document.createElement('img');
+            img.className = 'raw-item';
+            img.src = `img/${type}${num}.webp`;
+            rawList.appendChild(img);
+        }
+
+        // Lógica de Botones Expansibles (Test 19 Original)
+        const btns = [document.getElementById('btnR'), document.getElementById('btnW'), document.getElementById('btnI')];
+        const overs = [document.getElementById('ovR'), document.getElementById('ovW'), document.getElementById('ovI')];
+        const cl = document.getElementById('closeX');
+
+        btns.forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                const r = btn.getBoundingClientRect();
+                btn.style.top = r.top + 'px'; btn.style.left = r.left + 'px';
+                btn.classList.add('no-shape');
+                setTimeout(() => {
+                    btn.classList.add('expanded'); 
+                    overs[idx].classList.add('show'); 
+                    cl.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }, 20);
             });
         });
+
+        cl.onclick = () => {
+            document.querySelectorAll('.expanded').forEach(el => el.classList.remove('expanded', 'no-shape'));
+            document.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
+            cl.style.display = 'none';
+            document.body.style.overflow = '';
+            setTimeout(() => { btns.forEach(b => { b.style.top = ''; b.style.left = ''; }); }, 600);
+        };
     </script>
 </body>
 </html>
